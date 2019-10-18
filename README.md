@@ -1,4 +1,4 @@
-This Terraform module will provision an AWS environment with a static page thats displays "Automation for the poeple"
+This Terraform module will provision an AWS environment with a static page that displays "Automation for the poeple"
 
 Setup
 
