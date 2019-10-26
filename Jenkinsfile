@@ -1,41 +1,33 @@
 pipeline {
- agent any
+  agent any
 
- stages {
- stage(‘checkout’) {
- steps {
- git branch: ‘master’, url: ‘https://github.com/oseeinz/class_projects.git’
+  stages {
+    stage(‘checkout’) {
+      steps {
+        git branch: ‘master’, url: ‘https://github.com/oseeinz/class_projects.git’
+      }
+    }
+    stage(‘Set Terraform path’) {
+      steps {
+        script {
+          def tfHome = tool name: ‘Terraform’
+            env.PATH = “${tfHome}:${env.PATH}”
+        }
+sh ‘terraform — version’
 
- }
- }
- stage(‘Set Terraform path’) {
- steps {
- script {
- def tfHome = tool name: ‘Terraform’
- env.PATH = “${tfHome}:${env.PATH}”
- }
- sh ‘terraform — version’
+      }
+    }
 
-
- }
- }
-
- stage(‘Provision infrastructure’) {
-
- steps {
- dir(‘dev’)
- {
- sh ‘terraform init’
- sh ‘terraform plan -out=plan’
- // sh ‘terraform destroy -auto-approve’
- sh ‘terraform apply plan’
- }
-
-
- }
- }
-
-
-
- }
+    stage(‘Provision infrastructure’) {
+      steps {
+        dir(‘Terraform’)
+        {
+         sh ‘terraform init’
+         sh ‘terraform plan -out=plan’
+         // sh ‘terraform destroy -auto-approve’
+        //sh ‘terraform apply plan’
+        }
+      }
+    }
+  }
 }
